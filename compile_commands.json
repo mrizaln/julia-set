@@ -1,0 +1,32 @@
+[
+{
+  "directory": "/home/mrizaln/Projects/C/Julia Set/build/linux-debug",
+  "command": "/usr/lib64/ccache/cc  -I\"/home/mrizaln/Projects/C/Julia Set/include\" -I\"/home/mrizaln/Projects/C/Julia Set/lib/glad/include\" -g -std=gnu17 -o CMakeFiles/main.dir/main.c.o -c \"/home/mrizaln/Projects/C/Julia Set/main.c\"",
+  "file": "/home/mrizaln/Projects/C/Julia Set/main.c"
+},
+{
+  "directory": "/home/mrizaln/Projects/C/Julia Set/build/linux-debug",
+  "command": "/usr/lib64/ccache/cc  -I\"/home/mrizaln/Projects/C/Julia Set/include\" -I\"/home/mrizaln/Projects/C/Julia Set/lib/glad/include\" -g -std=gnu17 -o CMakeFiles/main.dir/src/control.c.o -c \"/home/mrizaln/Projects/C/Julia Set/src/control.c\"",
+  "file": "/home/mrizaln/Projects/C/Julia Set/src/control.c"
+},
+{
+  "directory": "/home/mrizaln/Projects/C/Julia Set/build/linux-debug",
+  "command": "/usr/lib64/ccache/cc  -I\"/home/mrizaln/Projects/C/Julia Set/include\" -I\"/home/mrizaln/Projects/C/Julia Set/lib/glad/include\" -g -std=gnu17 -o CMakeFiles/main.dir/src/linear_set.c.o -c \"/home/mrizaln/Projects/C/Julia Set/src/linear_set.c\"",
+  "file": "/home/mrizaln/Projects/C/Julia Set/src/linear_set.c"
+},
+{
+  "directory": "/home/mrizaln/Projects/C/Julia Set/build/linux-debug",
+  "command": "/usr/lib64/ccache/cc  -I\"/home/mrizaln/Projects/C/Julia Set/include\" -I\"/home/mrizaln/Projects/C/Julia Set/lib/glad/include\" -g -std=gnu17 -o CMakeFiles/main.dir/src/render.c.o -c \"/home/mrizaln/Projects/C/Julia Set/src/render.c\"",
+  "file": "/home/mrizaln/Projects/C/Julia Set/src/render.c"
+},
+{
+  "directory": "/home/mrizaln/Projects/C/Julia Set/build/linux-debug",
+  "command": "/usr/lib64/ccache/cc  -I\"/home/mrizaln/Projects/C/Julia Set/include\" -I\"/home/mrizaln/Projects/C/Julia Set/lib/glad/include\" -g -std=gnu17 -o CMakeFiles/main.dir/src/shader.c.o -c \"/home/mrizaln/Projects/C/Julia Set/src/shader.c\"",
+  "file": "/home/mrizaln/Projects/C/Julia Set/src/shader.c"
+},
+{
+  "directory": "/home/mrizaln/Projects/C/Julia Set/build/linux-debug/lib/glad",
+  "command": "/usr/lib64/ccache/cc  -I\"/home/mrizaln/Projects/C/Julia Set/lib/glad/include\" -g -std=gnu17 -o CMakeFiles/glad.dir/src/glad.c.o -c \"/home/mrizaln/Projects/C/Julia Set/lib/glad/src/glad.c\"",
+  "file": "/home/mrizaln/Projects/C/Julia Set/lib/glad/src/glad.c"
+}
+]
