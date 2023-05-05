@@ -21,5 +21,6 @@ target_link_libraries(main PUBLIC m)    # libm <math.h> library
 
 # copy resources to build directory
 add_custom_command(TARGET main POST_BUILD
-                   COMMAND ${CMAKE_COMMAND} -E copy_directory
+                   COMMAND ${CMAKE_COMMAND} -E create_symlink
                        ${CMAKE_SOURCE_DIR}/resources $<TARGET_FILE_DIR:main>/resources)
+
