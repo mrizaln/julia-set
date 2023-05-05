@@ -8,57 +8,57 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
-#define LINEAR_SET_VALUE_TYPE double
 #include <linear_set.h>
 #include <render.h>
 #include <shader.h>
+
+#define LINEAR_SET_VALUE_TYPE double
 
 // default values
 #define WIDTH              640
 #define HEIGHT             480
 #define ZOOM               1.0
-#define CENTER             0.00 + 0.00*I
-#define POI                0.00 + 0.00*I 
+#define CENTER             0.00 + 0.00 * I
+#define POI                0.00 + 0.00 * I
 #define SCROLL_SENSITIVITY 5.0
 #define MOUSE_SENSITIVITY  1.0
 
-
 typedef LINEAR_SET_VALUE_TYPE Complex_value;    // is the precision value for each real and imag
-typedef unsigned int Object;
+typedef unsigned int          Object;
 
 // data
 //----------------------------------------------------------------------------------------
-Complex g_center          = CENTER;
-Complex g_pointOfInterest = POI;
-Complex_value g_zoom      = ZOOM;
+Complex       g_center          = CENTER;
+Complex       g_pointOfInterest = POI;
+Complex_value g_zoom            = ZOOM;
 
-/*! \enum mouseCaptureMode
+/*! enum mouseCaptureMode
  *
  *  The two modes of mouse capture are:
  *      NONE  : mouse not captured;
  *      CENTER: move the origin of the Complex Plane;
  *      POI   : move point of interest (correspond to c in Julia Set)'
  */
+// clang-format off
 typedef enum { E_NONE, E_CENTER, E_POI } MouseCaptureMode;
 MouseCaptureMode g_mouseCaptureMode = E_NONE;
+// clang-format on
 //----------------------------------------------------------------------------------------
-
 
 void scroll_callback(GLFWwindow* window, double xOffset, double yOffset)
 {
-    const double multiplier = (SCROLL_SENSITIVITY/100 + 1.0);
-    g_zoom = (yOffset > 0 ? g_zoom*multiplier : g_zoom/multiplier);
+    const double multiplier = (SCROLL_SENSITIVITY / 100 + 1.0);
+    g_zoom                  = (yOffset > 0 ? g_zoom * multiplier : g_zoom / multiplier);
 }
 
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
-    if ((key == GLFW_KEY_ESCAPE || key == GLFW_KEY_Q) && action == GLFW_PRESS)
+    if ((key == GLFW_KEY_ESCAPE || key == GLFW_KEY_Q) && action == GLFW_PRESS) {
         glfwSetWindowShouldClose(window, 1);
+    }
 
-    if ((key == GLFW_KEY_C) && action == GLFW_PRESS)
-    {
-        switch (g_mouseCaptureMode)
-        {
+    if ((key == GLFW_KEY_C) && action == GLFW_PRESS) {
+        switch (g_mouseCaptureMode) {
         case E_CENTER:
             glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
             g_mouseCaptureMode = E_NONE;
@@ -71,10 +71,8 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
         }
     }
 
-    if ((key == GLFW_KEY_P) && action == GLFW_PRESS)
-    {
-        switch (g_mouseCaptureMode)
-        {
+    if ((key == GLFW_KEY_P) && action == GLFW_PRESS) {
+        switch (g_mouseCaptureMode) {
         case E_POI:
             glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
             g_mouseCaptureMode = E_NONE;
@@ -87,13 +85,11 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
         }
     }
 
-    if ((key == GLFW_KEY_BACKSPACE) && action == GLFW_PRESS)
-    {
-        g_center = CENTER;
+    if ((key == GLFW_KEY_BACKSPACE) && action == GLFW_PRESS) {
+        g_center          = CENTER;
         g_pointOfInterest = POI;
-        g_zoom = ZOOM;
+        g_zoom            = ZOOM;
     }
-
 }
 
 void cursor_position_callback(GLFWwindow* window, double xPos, double yPos)
@@ -103,17 +99,16 @@ void cursor_position_callback(GLFWwindow* window, double xPos, double yPos)
     static double lastX = 0.0;
     static double lastY = 0.0;
 
-    if (firstCapture)   // run once
+    if (firstCapture)    // run once
     {
         firstCapture = false;
-        lastX = xPos;
-        lastY = yPos;
+        lastX        = xPos;
+        lastY        = yPos;
         return;
     }
 
     Complex* toBeModified = NULL;
-    switch (g_mouseCaptureMode)
-    {
+    switch (g_mouseCaptureMode) {
     case E_NONE:
         firstCapture = true;
         return;
@@ -133,11 +128,12 @@ void cursor_position_callback(GLFWwindow* window, double xPos, double yPos)
     lastX = xPos;
     lastY = yPos;
 
-    *toBeModified += (xOffset + yOffset*I) * speed/g_zoom;
+    *toBeModified += (xOffset + yOffset * I) * speed / g_zoom;
 }
 
 Object buildRectangle(void)
 {
+    // clang-format off
     float vertices[] = {
         -1.0f, -1.0f, 0.0f,
          1.0f, -1.0f, 0.0f,
@@ -149,6 +145,7 @@ Object buildRectangle(void)
         0, 1, 2,
         2, 3, 0,
     };
+    // clang-format on
 
     unsigned int VBO, VAO, EBO;
 
@@ -166,8 +163,8 @@ Object buildRectangle(void)
 
     // linking vertex attributes
     glEnableVertexAttribArray(0);
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3*sizeof(float), (void*)0);
- 
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+
     // unbind
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindVertexArray(0);
@@ -177,7 +174,12 @@ Object buildRectangle(void)
 
 void render(void)
 {
-    GLFWwindow* window = initializeWindow(WIDTH, HEIGHT, "Mandelbrot Set"); 
+    GLFWwindow* window = initializeWindow(WIDTH, HEIGHT, "Julia Set");
+    if (!window) {
+        printf("Window creation failed: NULL\n");
+        printf("Your display probably isn't running\n");
+        return;
+    }
 
     glfwSetCursorPosCallback(window, cursor_position_callback);
     glfwSetScrollCallback(window, scroll_callback);
@@ -189,8 +191,7 @@ void render(void)
     );
     Object rectangle = buildRectangle();
 
-    while (!glfwWindowShouldClose(window))
-    {
+    while (!glfwWindowShouldClose(window)) {
         // render
         // ------
         // reset color buffer
@@ -214,12 +215,11 @@ void render(void)
 
         // glfw: swap buffer and poll IO events
         glfwSwapBuffers(window);
-        glfwPollEvents(); 
+        glfwPollEvents();
     }
 }
 
-
-int main(int argc, char *argv[])
+int main(int argc, char* argv[])
 {
     render();
 

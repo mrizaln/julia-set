@@ -58,28 +58,25 @@ char* readShaderFile(const char* shaderFilePath)
 
 void checkCompileErrors(unsigned int shader, const char* type)
 {
+    printf("%s SHADER COMPILE INFO\n", type);
+    printf("--------------------------------------------------------------------------------\n");
     int success;
     char infoLog[1024];
     if (strcmp(type, "PROGRAM"))   // if not equal
     {
         glGetShaderiv(shader, GL_COMPILE_STATUS, &success);
         if (!success)
-        {
-            glGetShaderInfoLog(shader, 1024, NULL, infoLog);
             printf("ERROR::SHADER_COMPILATION_ERROR of type: %s\n", type);
-            printf("%s\n", infoLog);
-        }
     }
     else
     {
         glGetProgramiv(shader, GL_LINK_STATUS, &success);
         if (!success)
-        {
-            glGetProgramInfoLog(shader, 1024, NULL, infoLog);
             printf("ERROR::PROGRAM_LINKING_ERROR of type: %s\n", type);
-            printf("%s\n", infoLog);
-        }
     }
+    glGetShaderInfoLog(shader, 1024, NULL, infoLog);
+    printf("%s\n", infoLog);
+    printf("--------------------------------------------------------------------------------\n\n");
 }
 
 Shader createShader(const char* vShaderPath, const char* fShaderPath)
