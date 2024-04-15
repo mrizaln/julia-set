@@ -1,10 +1,8 @@
-#include <render.h>
+#include "render.h"
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <stddef.h>
-#include <math.h>
-
 
 GLFWwindow* initializeWindow(int width, int height, const char* windowName)
 {
@@ -32,9 +30,9 @@ GLFWwindow* initializeWindow(int width, int height, const char* windowName)
     // set callbacks
     //--------------
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
-    //glfwSetCursorPosCallback(window, cursor_position_callback);
-    //glfwSetScrollCallback(window, scroll_callback);
-    //glfwSetKeyCallback(window, key_callback);
+    // glfwSetCursorPosCallback(window, cursor_position_callback);
+    // glfwSetScrollCallback(window, scroll_callback);
+    // glfwSetKeyCallback(window, key_callback);
 
     // glEnable(GL_DEPTH_TEST);         // depth test
     // glEnable(GL_BLEND);              // transparency
@@ -42,14 +40,14 @@ GLFWwindow* initializeWindow(int width, int height, const char* windowName)
     return window;
 }
 
-void finalizeWindow(GLFWwindow* window) {
+void finalizeWindow(GLFWwindow* window)
+{
     glfwDestroyWindow(window);
     glfwTerminate();
 }
 
 // window resize callback
-void framebuffer_size_callback(GLFWwindow *window, int width, int height)
+void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 {
     glViewport(0, 0, width, height);
 }
-
