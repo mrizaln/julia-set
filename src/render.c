@@ -42,6 +42,11 @@ GLFWwindow* initializeWindow(int width, int height, const char* windowName)
     return window;
 }
 
+void finalizeWindow(GLFWwindow* window) {
+    glfwDestroyWindow(window);
+    glfwTerminate();
+}
+
 // window resize callback
 void framebuffer_size_callback(GLFWwindow *window, int width, int height)
 {

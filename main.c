@@ -1,16 +1,15 @@
+#include "linear_set.h"
+#include "render.h"
+#include "shader.h"
+
+#include <glad/glad.h>
+#include <GLFW/glfw3.h>
+
 #include <complex.h>
 #include <stdio.h>
 #include <stddef.h>
 #include <stdlib.h>
 #include <stdbool.h>
-#include <math.h>
-
-#include <glad/glad.h>
-#include <GLFW/glfw3.h>
-
-#include <linear_set.h>
-#include <render.h>
-#include <shader.h>
 
 #define LINEAR_SET_VALUE_TYPE double
 
@@ -109,15 +108,9 @@ void cursor_position_callback(GLFWwindow* window, double xPos, double yPos)
 
     Complex* toBeModified = NULL;
     switch (g_mouseCaptureMode) {
-    case E_NONE:
-        firstCapture = true;
-        return;
-    case E_CENTER:
-        toBeModified = &g_center;
-        break;
-    case E_POI:
-        toBeModified = &g_pointOfInterest;
-        break;
+    case E_NONE: firstCapture = true; return;
+    case E_CENTER: toBeModified = &g_center; break;
+    case E_POI: toBeModified = &g_pointOfInterest; break;
     }
 
     const double speed = 0.002 * MOUSE_SENSITIVITY * (g_mouseCaptureMode == E_POI ? 0.2 : 1.0);
@@ -185,10 +178,7 @@ void render(void)
     glfwSetScrollCallback(window, scroll_callback);
     glfwSetKeyCallback(window, key_callback);
 
-    Shader shader = createShader(
-        "./resources/shaders/shader.vert",
-        "./resources/shaders/shader.frag"
-    );
+    Shader shader    = createShader("./resources/shaders/shader.vert", "./resources/shaders/shader.frag");
     Object rectangle = buildRectangle();
 
     while (!glfwWindowShouldClose(window)) {
@@ -206,7 +196,9 @@ void render(void)
         glfwGetFramebufferSize(window, &width, &height);
         glUniform2f(glGetUniformLocation(shader, "uWindowSize"), width, height);
         glUniform2f(glGetUniformLocation(shader, "uCenter"), creal(g_center), cimag(g_center));
-        glUniform2f(glGetUniformLocation(shader, "uPointOfInterest"), creal(g_pointOfInterest), cimag(g_pointOfInterest));
+        glUniform2f(
+            glGetUniformLocation(shader, "uPointOfInterest"), creal(g_pointOfInterest), cimag(g_pointOfInterest)
+        );
         glUniform1f(glGetUniformLocation(shader, "uZoom"), g_zoom);
 
         // draw
@@ -217,9 +209,11 @@ void render(void)
         glfwSwapBuffers(window);
         glfwPollEvents();
     }
+
+    finalizeWindow(window);
 }
 
-int main(int argc, char* argv[])
+int main(void)
 {
     render();
 

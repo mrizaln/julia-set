@@ -8,52 +8,23 @@
 #include <GLFW/glfw3.h>
 
 
-#define NODE_VALUE_TYPE char
-typedef struct _Node {
-    NODE_VALUE_TYPE value;
-    struct _Node* next;
-} Node;
-
-Node* createNewNode(NODE_VALUE_TYPE value)
-{
-    Node* node = malloc(sizeof(Node));
-    node->value = value;
-    node->next = NULL;
-    return node;
-}
-
 char* readShaderFile(const char* shaderFilePath)
 {
     FILE* shaderFile = fopen(shaderFilePath, "r");
-    if (!shaderFile)
+    if (!shaderFile) {
         return NULL;
-
-    Node* head = createNewNode(fgetc(shaderFile));
-    int length = 1;
-
-    char tmp;
-    Node* left = head;
-    Node* right = NULL;
-    while ((tmp = (char)fgetc(shaderFile)) != EOF)
-    {
-        ++length;
-        right = createNewNode(tmp);
-        left->next = right;
-        left = right;
     }
 
-    char* fileContent = malloc(sizeof(char)*(length+1));
-    Node* probe = head;
-    for (int i = 0; i < length; ++i)
-    {
-        fileContent[i] = probe->value;
-        Node* tmp = probe;
-        probe = probe->next;
-        free(tmp);
-    }
-    fileContent[length] = '\00';
+    fseek(shaderFile, 0, SEEK_END);
+    size_t length = (size_t)ftell(shaderFile);
 
-    return fileContent;
+    fseek(shaderFile, 0, SEEK_SET);
+
+    char* string = malloc((length + 1) * sizeof(char));
+    fread(string, 1, length, shaderFile);
+    string[length] = '\00';
+
+    return string;
 }
 
 void checkCompileErrors(unsigned int shader, const char* type)
